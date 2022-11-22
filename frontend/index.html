@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="index.js" defer></script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Snowflake Validator</title>
+  </head>
+  <body>
+    <header>
+      <p>Snowflake SQL Validator</p>
+    </header>
+    <main>
+      <div class="input">
+        <form action="" class="sql-form">
+          <textarea
+            name="sql-query"
+            id="sql"
+            cols="50"
+            rows="30"
+            placeholder="Enter your SQL query here to validate"
+            autofocus
+          ></textarea>
+          <button type="submit" id="submit">Validate</button>
+        </form>
+      </div>
+
+      <div class="output"></div>
+    </main>
+    <footer>
+      <p>copyright &copy; Kunal Chhabra</p>
+    </footer>
+  </body>
+</html>

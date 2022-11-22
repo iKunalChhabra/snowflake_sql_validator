@@ -1,0 +1,134 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f1faee;
+}
+
+main {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  flex: 3;
+}
+
+.input {
+  width: 100%;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  outline: none;
+  flex: 1;
+}
+
+.output {
+  width: 100%;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  outline: none;
+  flex: 1.5;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+textarea {
+  width: 100%;
+  height: 500px;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  outline: none;
+  flex: 1;
+  background-color: #f1faee;
+  overflow: auto;
+  border: 1px solid #a8dadc;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  border-spacing: 0;
+}
+
+td {
+  border: 1px solid #a8dadc;
+  padding: 10px;
+}
+
+tr:nth-child(even) {
+  background-color: #f1faee;
+}
+
+thead {
+  background-color: #457b9d;
+  color: #f1faee;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #e63946;
+  color: #f1faee;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.5s;
+}
+
+button:hover {
+  background-color: #e72936;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.5s;
+  scale: 1.1;
+}
+
+button:active {
+  scale: 0.9;
+  transition: 0.5s;
+}
+
+header,
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #a8dadc;
+  width: 100%;
+  padding: 10px;
+}
+
+header p {
+  color: #1d3557;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+footer p {
+  color: #1d3557;
+}
