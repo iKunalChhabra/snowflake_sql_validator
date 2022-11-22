@@ -21,11 +21,22 @@ submit.addEventListener("click", function (event) {
     body: JSON.stringify({ sql }),
   });
 
-  response.then((res) => {
-    res.json().then((data) => {
-      createTable(data);
+  response
+    .then((res) => {
+      res
+        .json()
+        .then((data) => {
+          createTable(data);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Unable to get data from server. Please try again later.");
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("Unable to get data from server. Please try again later.");
     });
-  });
 });
 
 function createTable(data) {
