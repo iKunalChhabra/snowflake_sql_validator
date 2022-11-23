@@ -4,16 +4,26 @@ let sql = "";
 const submit = document.getElementById("submit");
 const clear = document.getElementById("clear");
 const sqlEL = document.getElementById("sql");
-const output = document.querySelector(".output");
+const summary = document.querySelector(".summary");
 
 clear.addEventListener("click", () => {
   sqlEL.innerHTML = "";
+  clearSummary();
 });
 
-submit.addEventListener("click", function (event) {
-  event.preventDefault();
+function clearSummary() {
+  const summary = document.querySelectorAll(".summary-el");
+  summary.forEach((sum) => sum.remove());
+}
+
+function clearTooltip() {
   const tooltip = document.querySelectorAll(".tooltip");
   tooltip.forEach((tip) => tip.remove());
+}
+submit.addEventListener("click", function (event) {
+  event.preventDefault();
+  clearTooltip();
+  clearSummary();
   sql = sqlEL.textContent;
 
   if (sql === "") {
@@ -36,6 +46,7 @@ submit.addEventListener("click", function (event) {
         .json()
         .then((data) => {
           highlightText(data);
+          addSummary(data);
         })
         .catch((err) => {
           console.log(err);
@@ -89,4 +100,32 @@ function addTooltip(lineEL, msg) {
   tooltip.classList.add("tooltip");
   tooltip.textContent = msg;
   lineEL.appendChild(tooltip);
+}
+
+function addSummary(data) {
+  let warningCount = 0;
+  let errorCount = 0;
+  data.forEach((row) => {
+    if (row.msg_type === "warning") {
+      warningCount++;
+    } else if (row.msg_type === "error") {
+      errorCount++;
+    }
+  });
+
+  if (warningCount > 0) {
+    let warningCountEl = document.createElement("p");
+    warningCountEl.textContent = `Warnings: ${warningCount}`;
+    warningCountEl.classList.add("warning-count");
+    warningCountEl.classList.add("summary-el");
+    summary.appendChild(warningCountEl);
+  }
+
+  if (errorCount > 0) {
+    let errorCountEl = document.createElement("p");
+    errorCountEl.textContent = `Errors: ${errorCount}`;
+    errorCountEl.classList.add("error-count");
+    errorCountEl.classList.add("summary-el");
+    summary.appendChild(errorCountEl);
+  }
 }

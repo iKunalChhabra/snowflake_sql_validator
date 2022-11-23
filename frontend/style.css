@@ -147,3 +147,24 @@ footer p {
 .error .tooltip:before {
   content: " 🚨 ";
 }
+
+.error-count {
+  background-color: #e57582;
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.warning-count {
+  background-color: #dac274;
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.summary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
