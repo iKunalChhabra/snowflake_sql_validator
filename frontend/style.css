@@ -162,9 +162,17 @@ footer p {
   border-radius: 5px;
 }
 
+.warning-count:before {
+  content: " 💡 ";
+}
+
+.error-count:before {
+  content: " 🚨 ";
+}
+
 .summary {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 20px;
 }
