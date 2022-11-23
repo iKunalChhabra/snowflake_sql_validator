@@ -176,3 +176,48 @@ footer p {
   align-items: center;
   gap: 20px;
 }
+
+.app-error {
+  background-color: #e57582;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.app-warning {
+  background-color: #dac274;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.app-success {
+  background-color: #a8dadc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.app-error:before {
+  content: " 🚨 ";
+}
+
+.app-warning:before {
+  content: " 💡 ";
+}
+
+.app-success:before {
+  content: " ✅ ";
+}
+
+#copy-text {
+  background-color: #457b9d;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+#copy-text:hover {
+  background-color: #17789d;
+  scale: 1.1;
+}
+
+#copy-text:active {
+  scale: 0.9;
+}

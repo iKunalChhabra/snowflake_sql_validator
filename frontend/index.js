@@ -5,11 +5,8 @@ const submit = document.getElementById("submit");
 const clear = document.getElementById("clear");
 const sqlEL = document.getElementById("sql");
 const summary = document.querySelector(".summary");
-
-clear.addEventListener("click", () => {
-  sqlEL.innerHTML = "";
-  clearSummary();
-});
+const sqlForm = document.querySelector(".sql-form");
+const copyText = document.getElementById("copy-text");
 
 function clearSummary() {
   const summary = document.querySelectorAll(".summary-el");
@@ -20,14 +17,44 @@ function clearTooltip() {
   const tooltip = document.querySelectorAll(".tooltip");
   tooltip.forEach((tip) => tip.remove());
 }
+
+function clearAppMessage() {
+  const appError = document.querySelector(".app-message");
+  if (appError) {
+    appError.remove();
+  }
+}
+
+function showAppMessage(message, type) {
+  const appMessage = document.createElement("div");
+  appMessage.classList.add(`app-${type}`);
+  appMessage.classList.add(`app-message`);
+  appMessage.textContent = message;
+  sqlForm.insertBefore(appMessage, sqlForm.firstChild);
+}
+
+copyText.addEventListener("click", (event) => {
+  event.preventDefault();
+  const text = navigator.clipboard.writeText(
+    getRecursiveText(sqlEL, "tooltip")
+  );
+});
+
+clear.addEventListener("click", () => {
+  sqlEL.innerHTML = "";
+  clearAppMessage();
+  clearSummary();
+});
+
 submit.addEventListener("click", function (event) {
   event.preventDefault();
   clearTooltip();
   clearSummary();
+  clearAppMessage();
   sql = sqlEL.textContent;
 
   if (sql === "") {
-    alert("Please enter a SQL statement");
+    showAppMessage("Please enter a SQL statement", "warning");
     return;
   }
 
@@ -50,12 +77,18 @@ submit.addEventListener("click", function (event) {
         })
         .catch((err) => {
           console.log(err);
-          alert("Unable to get data from server. Please try again later.");
+          showAppMessage(
+            "Unable to get data from server. Please try again later.",
+            "error"
+          );
         });
     })
     .catch((err) => {
       console.log(err);
-      alert("Unable to get data from server. Please try again later.");
+      showAppMessage(
+        "Unable to get data from server. Please try again later.",
+        "error"
+      );
     });
 });
 
@@ -78,17 +111,21 @@ function highlightText(data) {
   });
 
   if (data.length === 0) {
-    alert("Everything looks good 🙂");
+    showAppMessage("Everything looks good", "success");
   }
 }
 
-function getRecursiveText(node) {
+function getRecursiveText(node, ignoreClass = null) {
   if (node.nodeName === "#text") {
     return node.textContent.toUpperCase().trim() + "\n";
   } else {
     let text = "";
+
+    if (ignoreClass && node.classList && node.classList.contains(ignoreClass)) {
+      return text;
+    }
     node.childNodes.forEach((child) => {
-      text += getRecursiveText(child);
+      text += getRecursiveText(child, ignoreClass);
     });
     return text;
   }
