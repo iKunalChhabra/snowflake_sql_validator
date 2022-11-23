@@ -2,10 +2,19 @@ const api_endpoint = "http://127.0.0.1:5000/";
 let sql = "";
 
 const submit = document.getElementById("submit");
+const clear = document.getElementById("clear");
+const sqlEL = document.getElementById("sql");
+const output = document.querySelector(".output");
+
+clear.addEventListener("click", () => {
+  sqlEL.innerHTML = "";
+});
 
 submit.addEventListener("click", function (event) {
   event.preventDefault();
-  sql = document.getElementById("sql").value;
+  const tooltip = document.querySelectorAll(".tooltip");
+  tooltip.forEach((tip) => tip.remove());
+  sql = sqlEL.textContent;
 
   if (sql === "") {
     alert("Please enter a SQL statement");
@@ -26,7 +35,7 @@ submit.addEventListener("click", function (event) {
       res
         .json()
         .then((data) => {
-          createTable(data);
+          highlightText(data);
         })
         .catch((err) => {
           console.log(err);
@@ -39,38 +48,45 @@ submit.addEventListener("click", function (event) {
     });
 });
 
-function createTable(data) {
-  const output = document.querySelector(".output");
-  output.childElementCount > 0 && output.removeChild(output.firstChild);
+function highlightText(data) {
+  let text = getRecursiveText(sqlEL);
+  let lines = text.split("\n");
+  sqlEL.innerHTML = "";
+  lines.forEach((line) => {
+    let lineEL = document.createElement("p");
+    lineEL.textContent = line;
+    lineEL.classList.add("line");
+    for (let row in data) {
+      if (line.includes(data[row].sql)) {
+        lineEL.classList.add(data[row].msg_type);
+        addTooltip(lineEL, data[row].msg);
+      }
+    }
+    sqlEL.appendChild(lineEL);
+    sqlEL.appendChild(document.createElement("br"));
+  });
 
   if (data.length === 0) {
-    let message = document.createElement("p");
-    message.textContent = "Everything looks good 🙂";
-    output.appendChild(message);
-    return;
+    alert("Everything looks good 🙂");
   }
+}
 
-  let table = document.createElement("table");
-  output.appendChild(table);
-
-  let thead = table.createTHead();
-  let tRow = thead.insertRow();
-  tRow.insertCell().innerHTML = "Validation Name";
-  tRow.insertCell().innerHTML = "SQL";
-  tRow.insertCell().innerHTML = "Message Type";
-  tRow.insertCell().innerHTML = "Message";
-
-  let tbody = table.createTBody();
-  for (let row in data) {
-    let tRow = tbody.insertRow();
-    let check = tRow.insertCell();
-    let sql = tRow.insertCell();
-    let msg_type = tRow.insertCell();
-    let msg = tRow.insertCell();
-
-    check.innerHTML = data[row].validation_name;
-    sql.innerHTML = data[row].sql;
-    msg_type.innerHTML = data[row].msg_type;
-    msg.innerHTML = data[row].msg;
+function getRecursiveText(node) {
+  if (node.nodeName === "#text") {
+    return node.textContent.toUpperCase().trim() + "\n";
+  } else {
+    let text = "";
+    node.childNodes.forEach((child) => {
+      text += getRecursiveText(child);
+    });
+    return text;
   }
+}
+
+function addTooltip(lineEL, msg) {
+  let tooltip = document.createElement("div");
+  tooltip.setAttribute("contenteditable", "false");
+  tooltip.classList.add("tooltip");
+  tooltip.textContent = msg;
+  lineEL.appendChild(tooltip);
 }

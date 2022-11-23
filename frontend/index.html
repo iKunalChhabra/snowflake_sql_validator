@@ -18,19 +18,19 @@
     <main>
       <div class="input">
         <form action="" class="sql-form">
-          <textarea
-            name="sql-query"
+          <div
+            class="sql-area"
             id="sql"
-            cols="50"
-            rows="30"
-            placeholder="Enter your SQL query here to validate"
+            contenteditable="true"
             autofocus
-          ></textarea>
-          <button type="submit" id="submit">Validate</button>
+            placeholder="Enter your SQL query here"
+          ></div>
+          <div class="buttons">
+            <button type="reset" id="clear">Clear</button>
+            <button type="submit" id="submit">Validate</button>
+          </div>
         </form>
       </div>
-
-      <div class="output"></div>
     </main>
     <footer>
       <p>copyright &copy; Kunal Chhabra</p>

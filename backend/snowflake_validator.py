@@ -8,7 +8,7 @@ class SnowflakeValidator:
 
     def transform(self):
         self.query = self.query.replace('\n', '"').\
-                    strip().upper().replace('"', '')
+                    strip().replace('"', '').upper()
 
     def update_validation_result(self, validation_name, sql, msg_type, msg):
         self.validation_result.append({
@@ -19,31 +19,34 @@ class SnowflakeValidator:
         })
 
     def validate_backup_table_name(self):
+        backup_table_patterns = ['BACKUP','BKP','BKUP']
         pattern = re.compile(r'CREATE\s+TABLE\s+[A-Z0-9_]+')
         match = pattern.findall(self.query)
         if match:
             sql = match[0]
             table_name = sql.split()[-1]
-            if table_name.endswith('_BKP'):
-                self.update_validation_result(
-                    'Backup Table',
-                    sql,
-                    'warning',
-                    'Backup table should not be created',
-                )
+            for pattern in backup_table_patterns:
+                if pattern in table_name:
+                    self.update_validation_result(
+                        'Backup Table',
+                        sql,
+                        'warning',
+                        'Backup table should not be created',
+                    )
 
     def custom_retention_period(self):
         pattern = re.compile(r'DATA_RETENTION_TIME_IN_DAYS\s*=\s*\d+')
         match = pattern.findall(self.query)
+        max_retention_period = 7
         if match:
             sql = match[0]
             retention_period = int(sql.split('=')[-1].strip())
-            if retention_period > 30:
+            if retention_period > max_retention_period:
                 self.update_validation_result(
                     'Custom Retention Period',
                     sql,
                     'error',
-                    'Retention period is greater than 30 days',
+                    f'Retention period is greater than {max_retention_period} days',
                 )
 
     def validate(self):
